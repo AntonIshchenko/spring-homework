@@ -2,6 +2,7 @@ package com.epam.homework.service;
 
 import com.epam.homework.dao.TaskRepository;
 import com.epam.homework.dao.UserRepository;
+import com.epam.homework.entity.AuthenticationDto;
 import com.epam.homework.entity.User;
 import com.epam.homework.entity.UserDto;
 import com.epam.homework.entity.UserRole;
@@ -41,16 +42,18 @@ public class UserServiceImpl implements UserService {
     }
 
   @Override
-  public User signIn(UserDto userDto) {
-    User user = userRepository.findByEmail(userDto.getEmail());
+  public User signIn(AuthenticationDto authDto) {
+    User user = userRepository.findByEmail(authDto.getEmail());
     if (user == null) {
       throw new UserNotFoundException("Wrong email");
     }
-    if (!userDto.getPassword().equals(user.getPassword())) {
+    if (!authDto.getPassword().equals(user.getPassword())) {
       throw new WrongPassword("Wrong password");
     }
     return user;
   }
+
+
 
     @Override
     public void subscribe(String userEmail) {
@@ -69,5 +72,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("No user found!"));
         return DigestUtils.md5Hex(KEYWORD).equals(user.getSubscription());
+    }
+
+    @Override
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No user found!"));
     }
 }
