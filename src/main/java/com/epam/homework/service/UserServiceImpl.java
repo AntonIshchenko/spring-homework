@@ -65,8 +65,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isSubscribed(UserDto userDto) {
-        User user = userRepository.findByEmail(userDto.getEmail());
+    public boolean isSubscribed(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No user found!"));
         return DigestUtils.md5Hex(KEYWORD).equals(user.getSubscription());
     }
 }

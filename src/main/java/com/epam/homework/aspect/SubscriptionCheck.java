@@ -1,20 +1,19 @@
 package com.epam.homework.aspect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.epam.homework.dao.UserRepository;
 import com.epam.homework.entity.Task;
 import com.epam.homework.entity.User;
 import com.epam.homework.entity.UserDto;
 import com.epam.homework.exception.TaskOverflowException;
 import com.epam.homework.service.TaskService;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Aspect
 @Component
@@ -48,9 +47,4 @@ public class SubscriptionCheck {
             }
         }
     }
-
-//    @After("onTaskCreate(description, user)")
-//    public void some(String d, User u) throws Exception {
-//
-//    }
 }

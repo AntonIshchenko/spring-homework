@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import com.epam.homework.entity.UserDto;
 import com.epam.homework.exception.EntityNotFoundException;
+import com.epam.homework.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,14 +37,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createTask(String description, UserDto userDto) {
+    public Task createTask(String description, Long userId) {
 
-        Task task = new Task().builder()
+        Task task = Task.builder()
                 .taskDescription(description)
                 .priority(TaskPriority.MEDIUM)
                 .taskComplete(false)
                 .fileName("")
-                .user(userRepository.findByEmail(userDto.getEmail()))
+                .user(userRepository.findById(userId).orElseThrow(
+                        () -> new UserNotFoundException("No user found!")))
                 .build();
         return taskRepository.save(task);
     }
@@ -91,5 +93,11 @@ public class TaskServiceImpl implements TaskService {
             task = taskRepository.save(task);
         }
         return task;
+    }
+
+    @Override
+    public Task findTask(Long taskId) {
+        return taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("No task found!"));
     }
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(String description, UserDto userDto);
+    Task createTask(String description, Long userId);
 
     void deleteTask(Long id);
 
@@ -21,4 +21,6 @@ public interface TaskService {
     Task markTaskComplete(Long taskId, Boolean completed);
 
     Task saveFile(Long taskId, MultipartFile file) throws IOException;
+
+    Task findTask(Long taskId);
 }
